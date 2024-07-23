@@ -1,0 +1,230 @@
+#Authentication Routes................................................................
+
+1) Register................................................................
+
+URL: https://trynodecode-v4.onrender.com/api/v4/auth/register
+Method: POST
+Description: Register a new user.
+
+Request Body:
+    {
+    "name": "string",
+    "email": "string",
+    "password": "string",
+    "confirmPassword": "string",
+    "age": "number",
+    "gender": "string"
+    }
+File Upload: 
+    photo: image file (required)
+
+Response:
+    201 Created: On successful registration
+    400 Bad Request: If any field is missing or passwords do not match
+    409 Conflict: If the user already exists
+    500 Internal Server Error: On server error
+
+
+
+2)Login................................................................
+
+URL: https://trynodecode-v4.onrender.com/api/v4/auth/login
+Method: POST
+Description: Login an existing user.
+
+Request Body:
+    {
+    "email": "string",
+    "password": "string"
+    }
+
+Response:
+    200 OK: On successful login
+    400 Bad Request: If email or password is missing
+    404 Not Found: If the user is not found
+    401 Unauthorized: If the password is incorrect
+    500 Internal Server Error: On server error
+
+
+
+3)Logout................................................................
+
+URL: https://trynodecode-v4.onrender.com/api/v4/auth/logout
+Method: GET
+Description: Logout the current user.
+
+Response:
+    200 OK: On successful logout
+
+
+
+#Group Routes................................................................
+
+4)Create Group...........
+
+URL: https://trynodecode-v4.onrender.com/api/v4/group/creategroup
+Method: POST
+Description: Create a new group.
+
+Headers:
+    Authorization: Bearer token (required)
+
+Request Body:
+    {
+    "name": "string"
+    }
+File Upload:
+    image: image file (required)
+
+Response:
+    200 OK: On successful creation
+    400 Bad Request: If the group name or image is missing
+    409 Conflict: If the group already exists
+    500 Internal Server Error: On server error
+
+
+
+5)Update Group Status................................................................
+
+URL: https://trynodecode-v4.onrender.com/api/v4/group/updatestatus
+Method: PUT
+Description: Update the status of a group.
+
+Headers:
+    Authorization: Bearer token (required)
+
+Query Parameters:
+    id: Group ID (required)
+
+Request Body:
+    {
+    "status": "string" // must be "pending", "accepted", or "rejected"
+    }
+
+Response:
+    200 OK: On successful status update
+    400 Bad Request: If the group ID or status is missing/invalid
+    401 Unauthorized: If the user is not the group admin
+    409 Conflict: If the group does not exist
+    500 Internal Server Error: On server error
+
+
+
+
+#User Routes................................................................
+
+6)Get My Profile..............
+
+URL: https://trynodecode-v4.onrender.com/api/v4/user/myprofile
+Method: GET
+Description: Get the profile of the logged-in user.
+
+Headers:
+    Authorization: Bearer token (required)
+
+Response:
+    200 OK: On successful retrieval
+    404 Not Found: If the user is not found
+    500 Internal Server Error: On server error
+
+
+
+7)Get All Users..................
+
+URL: https://trynodecode-v4.onrender.com/api/v4/user/getallusers
+Method: GET
+Description: Get a list of all users.
+
+Headers:
+    Authorization: Bearer token (required)
+
+Response:
+    200 OK: On successful retrieval
+    404 Not Found: If no users are found
+    500 Internal Server Error: On server error
+
+
+
+8)Search User..................
+
+URL: https://trynodecode-v4.onrender.com/api/v4/user/searchuser
+Method: POST
+Description: Search for a user by email.
+
+Headers:
+    Authorization: Bearer token (required)
+
+Request Body:
+    {
+    "email": "string"
+    }
+
+Response:
+    200 OK: On successful retrieval
+    400 Bad Request: If the email format is invalid
+    404 Not Found: If the email does not exist
+    500 Internal Server Error: On server error
+
+
+
+9)Update User Profile............
+
+URL: https://trynodecode-v4.onrender.com/api/v4/user/updateprofile
+Method: PUT
+Description: Update the profile of the logged-in user.
+
+Headers:
+    Authorization: Bearer token (required)
+
+Request Body:
+    {
+        "name": "string",
+        "gender": "string",
+        "age": "number"
+    }
+File Upload:
+    photo: image file (optional)
+
+Response:
+    200 OK: On successful update
+    404 Not Found: If the user does not exist
+    500 Internal Server Error: On server error
+
+
+
+10)Forgot Password.............
+
+URL: https://trynodecode-v4.onrender.com/api/v4/user/forgotpass
+Method: POST
+Description: Send a password reset email.
+
+Request Body:
+    {
+        "email": "string"
+    }
+
+Response:
+    200 OK: On successful email send
+    404 Not Found: If the email is invalid
+    500 Internal Server Error: On server error
+
+
+
+11)Reset Password..............
+
+URL: https://trynodecode-v4.onrender.com/api/v4/user/resetpassword
+Method: POST
+Description: Reset the password using a token.
+
+Query Parameters:
+    token: Password reset token (required)
+Request Body:
+    {
+        "password": "string",
+        "confirmPassword": "string"
+    }
+Response:
+    200 OK: On successful password reset
+    400 Bad Request: If the token is invalid or expired, or passwords do not match
+    404 Not Found: If the user does not exist
+    500 Internal Server Error: On server error
